@@ -279,7 +279,7 @@ func (s *Supervisor) Add(service Service) ServiceToken {
 	s.m.Unlock()
 
 	response := make(chan serviceID)
-	if !s.sendControl(addService{service, serviceName(service), response}) {
+	if s.sendControl(addService{service, serviceName(service), response}) == nil {
 		return ServiceToken{}
 	}
 	return ServiceToken{uint64(s.id)<<32 | uint64(<-response)}
